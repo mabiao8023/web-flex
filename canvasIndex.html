@@ -1,0 +1,78 @@
+<!doctype html>
+<html>
+	<head>
+		<title>loading</title>
+		<style>
+			body {
+			  width: 100vw;
+			  height: 100vh;
+			  display: flex;
+			  justify-content: center;
+			  align-items: center;
+			}
+		</style>
+	</head>
+	<body>
+		<canvas id="canvas" width="50" height="50">
+  您的浏览器不支持canvas
+    </canvas>
+	<script>
+
+var canvas = document.getElementById("canvas");
+var ctx = canvas.getContext('2d');
+
+// 初始化变量
+var canvasWidth = canvas.width;
+var canvasHeight = canvas.height;
+var r = 3; // 小圆的半径
+var R = canvasWidth/2; //大圆的半径 
+var rd = 0.29*R; // 大圆边45°的坐标差值
+
+var opacity = 0.3; // 初始透明度
+
+
+// 各圆圆心的坐标
+var coordinate = 
+    [
+    {x:r,y:R},
+    {x:rd + r,y:rd + r},
+    {x:R,y:r},
+    {x:2*R - rd - r,y:rd +r},
+    {x:2*R - r,y:R},
+    {x:2*R -rd -r,y:2*R -rd -r},
+    {x:R,y:2*R -r},
+    {x:rd +r ,y:2*R-rd - r},
+    ];
+
+// 先画圆
+
+function drawCircle(opacity){
+  // 清除画布
+  // 修改数组中点的坐标
+  var intiOpacity = opacity;
+
+  ctx.clearRect(0,0,canvasWidth,canvasHeight);
+  
+  coordinate.forEach(function(val,index){
+    ctx.beginPath();
+    ctx.fillStyle = "#000";
+    ctx.globalAlpha = opacity;
+    ctx.arc(val.x,val.y,r,0,2*Math.PI);
+    ctx.fill();
+    opacity = opacity + 0.05;
+  })
+
+  // 循环调用
+  setTimeout(function(){
+  	coordinate.push(coordinate.shift());	
+  	drawCircle(intiOpacity);
+  },100);
+}
+
+drawCircle(opacity);
+
+
+	</script>
+
+	</body>
+</html>	
